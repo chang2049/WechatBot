@@ -15,15 +15,20 @@ import org.leo.service.MessageServiceImpl;
 import org.leo.service.WechatAuth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.leo.service.WechatPushService;
 
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 /**
  * Azure Functions with HTTP Trigger.
  */
 public class HttpTriggerFunction {
+    String[] users = {"oXNV46DGOcX2x84jxcUeCiWXUJSA","oXNV46DQdQWkcWvMzrVpDNw8KtN0","oXNV46MVUtaohR3lg3jH36bfIs2k"};
     /**
      * This function listens at endpoint "/api/HttpExample". Two ways to invoke it using "curl" command in bash:
      * 1. curl -d "HTTP Body" {your host}/api/HttpExample
@@ -76,10 +81,14 @@ public class HttpTriggerFunction {
         Root root = om.readValue(body, Root.class);
 
         HeadCommit head_commit = root.getHead_commit();
+        String url = head_commit.getUrl();
+//        String result = "我giao，"+head_commit.getAuthor().getName()+" "+head_commit.getMessage();
+        String name = head_commit.getAuthor().getName();
+        String message = head_commit.getMessage();
 
-        String result = "我giao，"+head_commit.getAuthor().getName()+" "+head_commit.getMessage();
 
-        System.out.println(body);
+        final WechatPushService service = new WechatPushService();
+        Arrays.stream(users).forEach(x->service.tempPush(x,name,message,url));
 
     }
 

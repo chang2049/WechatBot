@@ -1,8 +1,6 @@
 package org.leo.util;
 
 
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import org.leo.pojo.AccessToken;
@@ -19,8 +17,8 @@ import java.net.URL;
  * @author zhoumin
  * @create 2018-07-12 10:04
  */
-public class ComminUtil {
-    private static Logger log = LoggerFactory.getLogger(ComminUtil.class);
+public class CommonUtil {
+//    private static Logger log = LoggerFactory.getLogger(CommonUtil.class);
     // 凭证获取（GET）
     public final static String token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
     /**
@@ -72,9 +70,10 @@ public class ComminUtil {
             conn.disconnect();
             jsonObject = JSONObject.fromObject(buffer.toString());
         } catch (ConnectException ce) {
-            log.error("连接超时：{}", ce);
+            System.out.println("连接超时：{}"+ce);
+//            log.error("连接超时：{}", ce);
         } catch (Exception e) {
-            log.error("https请求异常：{}", e);
+            System.out.println("https请求异常：{}"+ e);
         }
         return jsonObject;
     }
@@ -98,7 +97,7 @@ public class ComminUtil {
             } catch (JSONException e) {
                 token = null;
                 // 获取token失败
-                log.error("获取token失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
+//                log.error("获取token失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
             }
         }
         return token;
